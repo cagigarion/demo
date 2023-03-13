@@ -1,0 +1,49 @@
+{
+    "function_name": {
+        "brokers": "pulsar://localhost:6650",
+        "window": {},
+        "input_topics": {
+            "list_of_topics": [
+                "non-persistent://public/default/topic1001",
+                "non-persistent://public/default/topic1101"
+            ],
+            "subscription_id": "subscription_id1"
+        },
+        "sink": {
+            "name": "stdout"
+        },
+        "input_schema": {
+            "name": "CompanyRecord.",
+            "detai_schema": {
+                "companyrecord": {
+                    "company_name": "string",
+                    "place": "string",
+                    "tax_number": "string",
+                    "revenue":"int"
+                }
+            }
+        },
+        "ops": {
+            "match": {
+                "__comment": "specification of an op, specific to op",
+                "at": "$",
+                "where": {
+                    "field": "place",
+                    "operator": "=",
+                    "value": "SaiGon"
+                }
+            },
+            "rollup":{
+                "__comment":"this operator is based on a window of data"
+
+            },
+            "aggregrate":{
+                "__comment":"this operator can be applied for a single message or a window of data"
+
+            },
+            "enrich":{
+                "__comment":"for a single data"
+            }
+        }
+    }
+}

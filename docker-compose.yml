@@ -1,0 +1,46 @@
+version: '3.4'
+
+services:
+  pulsar:
+    container_name: pulsar
+    image: apachepulsar/pulsar:2.6.0
+    command: bin/pulsar standalone
+    hostname: pulsar
+    ports:
+      - "8080:8080"
+      - "6650:6650"
+    networks:
+      - databiz
+    restart: on-failure
+    volumes:
+      - "./data/:/pulsar/data"
+
+  rabbitmq-node-1:
+    image: rabbitmq:3.11-management
+    container_name: rabbitmq
+    hostname: rabbitmq
+    ports:
+    - "5672:5672"
+    - "15672:15672"
+    networks:
+    - databiz
+    volumes:
+    - $PWD/storage/rabbitmq:/var/lib/rabbitmq
+    environment:
+    - RABBITMQ_ERLANG_COOKIE=cluster_cookie
+    - RABBITMQ_DEFAULT_USER=guest
+    - RABBITMQ_DEFAULT_PASS=guest 
+    
+  etl:
+    container_name: etl
+    image: etl
+    build:
+      context: ./etl
+      dockerfile: ./Dockerfile
+    networks:
+      - databiz
+ 
+
+networks:
+  databiz:
+    driver: bridge
