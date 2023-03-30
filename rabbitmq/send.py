@@ -1,3 +1,10 @@
+'''
+API sends data to Agent through Exchange name 'agent.direct' type 'direct' and queue 'databiz-agent'
+Agent sends data to API through Exchange name 'logs.direct' type 'direct' and queue 'databiz-log'
+
+'''
+
+
 import pika
 import random
 import sys
@@ -6,7 +13,7 @@ connection = pika.BlockingConnection(pika.ConnectionParameters('localhost'))
 
 channel = connection.channel()
 
-channel.exchange_declare(exchange='logs', exchange_type='fanout')
+channel.exchange_declare(exchange='agent.direct', exchange_type='direct')
 
 '''
  before sending we need to make sure the recipient queue exists
@@ -32,7 +39,7 @@ print('messaeg', message)
 
 
 
-channel.basic_publish(exchange='logs', 
+channel.basic_publish(exchange='agent.direct', 
                     routing_key='task_queue', 
                     body= message,
                     properties= pika.BasicProperties(delivery_mode= pika.spec.PERSISTENT_DELIVERY_MODE))

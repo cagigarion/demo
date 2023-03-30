@@ -6,11 +6,11 @@ connection = pika.BlockingConnection(pika.ConnectionParameters('localhost'))
 
 channel = connection.channel()
 
-channel.exchange_declare(exchange='logs', exchange_type='fanout')
+channel.exchange_declare(exchange='agent.direct', exchange_type='direct')
 
 channel.queue_declare(queue='task_queue', durable=True)
 
-channel.queue_bind(queue='task_queue', exchange='logs')
+channel.queue_bind(queue='task_queue', exchange='agent.direct')
 
 def callback(ch, method, properties, body):
     print(" [x] Received %r" % body.decode())
