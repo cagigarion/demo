@@ -1,6 +1,6 @@
 '''
 API sends data to Agent through Exchange name 'agent.direct' type 'direct' and queue 'databiz-agent'
-Agent sends data to API through Exchange name 'logs.direct' type 'direct' and queue 'databiz-log'
+Agent sends data to API through Exchange name 'logs.fanout' type 'direct' and queue 'databiz-log'
 
 '''
 
